@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="online.shixun.project.mapper.SubjectMapper">
+	<resultMap type="Subject" id="mysbuject" >
+		<result column="s_id" property="id"/>
+		<result column="stem" property="stem"/>
+		<collection  property="answer" ofType="Answer">
+			<result column="a_id" property="id"/>
+			<result column="content" property="content"/>
+			<result column="subject_id" property="subject_id"/>
+			<result column="istrue" property="istrue" />
+		</collection>
+	</resultMap>
+
+<select id="getCurrentAnswer" resultMap="mysbuject">
+SELECT 
+	s.stem,a.content,s.id,a.id
+FROM 
+	subject s,answer a
+WHERE 
+	#{id}=a.subject_id
+AND 
+	s.id=#{subjectNo}
+</select>
+<select id="getallAnswer" resultMap="mysbuject">
+SELECT 
+	s.stem,a.content,s.id,a.istrue,a.id as a_id
+FROM 
+	subject s,answer a
+WHERE 
+	s.id=#{id}
+AND 
+	a.subject_id=#{subjectId}
+</select>
+<select id="getsubjectById" resultType="Subject">
+SELECT 
+	s.id 
+FROM 
+	subject s
+
+</select>
+
+</mapper>

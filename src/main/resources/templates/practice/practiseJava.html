@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+.below {
+	text-align: center;
+}
+
+#pageNo {
+	width: 20px;
+	height: 12px;
+}
+#page{
+	margin-left: 666px;
+}
+</style>
+<body>
+	<div th:each="Pjava:${practisejava}">
+		<spen class="pjava" th:text=${Pjava.name}></spen>
+	</div>
+	<div class="below">
+		<div th:each="javap:${javaprac}">
+			<h2 th:text=${javap.name}></h2>
+			<div th:each="javas:${javap.javaOption}">
+				<input class="pol" type="radio" name="radioId" th:value="${javas.id}" >
+				 <span th:text="${javas.topic}"></span>
+			</div>
+		</div>
+		<div class="buuts" th:if="${practiseNo gt 1}">
+			<span  class="ids" th:text=${id-1} style="display: none"></span> <span
+				 class="practiseNos"
+				th:text=${practiseNo-1} style="display: none"></span>
+			<button type="submit" class="buuts">上一题</button>
+		</div>
+		<div class="buutx" th:if="${practiseNo le 6}" >
+			<span  class="idx" th:text=${id+1} style="display: none"></span> <span
+				class="practiseNox"
+				th:text=${practiseNo+1} style="display: none"></span>
+			<button type="submit" class="buutx">下一题</button>
+		</div>
+	</div>
+	</div>
+	<div>
+		<p>答题分数</p>
+		<span th:text="${option}*20"></span>
+	</div>
+	<script src="js/jquery-2.0.3.min.js"></script>
+	<script src="js/jquery.cookie.js"></script>
+	<script type="text/javascript">
+	
+	//鼠标经过显示隐藏
+		var c;
+		$("#frame ").mouseover(function() {
+			c = $(this).css("background-color");
+			$(this).css("background", "yellow");
+			alert(c.val());
+		}).mouseout(function() {
+			$(this).css("background", c);
+		});
+
+		//异步提交上一题并带数据
+		$(".buuts").click(function(event) {
+			event.preventDefault();
+			$(".content").css("display", "none");
+			var id = $(".ids").html();//attr("href");
+			var practiseNo = $(".practiseNos").html();
+			var polvalue = $("input[type='radio']:checked").val();	
+			$.get("practise", {
+				practises:polvalue,
+				id : id,
+				practiseNo : practiseNo
+			}, function(data) {
+				$(".homepage").html(data);
+				//var lastname = localStorage.getItem("isSelect");
+				//$("#"+lastname).prop("checked",true);
+			})
+		})
+		//异步提交下一题并带数据
+		$(".buutx").click(function(event) {
+			event.preventDefault();
+			$(".content").css("display", "none");
+			var id = $(".idx").html();//attr("href");
+			var practiseNo = $(".practiseNox").html();
+			var polvalue = $("input[type='radio']:checked").val();
+			//localStorage.setItem("isSelect", polvalue);
+			$.get("practise", {
+				practises :polvalue,
+				id : id,
+				practiseNo : practiseNo
+			}, function(data) {
+				$(".homepage").html(data);
+			})
+		});
+	</script>
+</body>
+</html>

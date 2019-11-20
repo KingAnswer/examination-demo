@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="online.shixun.project.mapper.JavapractiseMapper">
+	<resultMap type="javapractise" id="mypractise" >
+		<result column="jp_id" property="id"/>
+		<result column="name" property="name"/>
+		<collection  property="javaOption" ofType="javaOptions">
+			<result column="jo_id" property="id"/>
+			<result column="topic" property="topic"/>
+			<result column="javapractise_id" property="javapractise_id"/>
+			<result column="isture" property="isture" />
+		</collection>
+	</resultMap>
+
+<select id="getallpractise" resultMap="mypractise">
+SELECT 
+	jp.id AS jp_id ,jp.name,jo.topic,jo.isture,jo.id AS jo_id
+FROM 
+	javapractise jp ,java_options jo
+	
+WHERE
+	jp.id=#{id}
+AND
+	jo.javapractise_id=#{practiseNo}
+
+</select>
+<select id="getallTpractise" resultType="javapractise">
+SELECT 
+	id ,name
+FROM 
+	paper_practise 
+	
+</select>
+<insert id="addPractise">
+INSERT INTO
+	javapractise(name)
+VALUES 
+	(#{name});
+</insert>
+<select id="getallrevise" resultMap="mypractise">
+SELECT 
+	jp.id AS jp_id ,jp.name,jo.topic,jo.isture,jo.id AS jo_id,jo.javapractise_id
+FROM 
+	javapractise jp ,java_options jo
+	
+WHERE
+	jp.id=#{id}
+AND
+	jo.javapractise_id=#{id}
+
+</select>
+</mapper>

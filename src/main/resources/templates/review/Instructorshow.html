@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+<p id="fdy">辅导员</p>
+<div id="lpo" th:each="evaled:${eval}">
+	<h2 th:text="${evaled.subject}"></h2>
+	<div th:each="eva:${evaled.evaluateTopic}">
+		<input class="fraction"  type="radio" name="radioId" th:value="${eva.id}"> 
+		<span th:text="${eva.choose}"></span>		
+	</div>
+</div>
+<div class="buut">
+	   第<input id="pageNo"  type="text" name="pageNo" th:value="${Id}">题
+	<a id="pape" th:if="${EvaluateId gt 1}" th:href="'Instructor?id='+${Id-1}+'&'+'EvaluateId='+${EvaluateId-1}">上一题</a>
+	<a id="pape" th:if="${EvaluateId lt 4}" th:href="'Instructor?id='+${Id+1}+'&'+'EvaluateId='+${EvaluateId+1}">下一题</a>
+</div>
+<div class="sds" th:each="eavalus :${evalu}">
+<a class="isd"  th:text="${eavalus.id}" th:href="'Instructor?id='+${eavalus.id}+'&'+'EvaluateId='+${eavalus.id}"></a>
+</div>
+<div>
+<p>分数</p>
+<span th:text="${Tps}"></span>
+</div>
+<script src="js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(".fraction").click(function(){
+	var fraction = $("input[type='radio']:checked").val();
+	if(fraction>6){
+		$("#fdy").css("display", "none");
+		$(".buut").css("display", "none");
+		$(".sds").css("display", "none");
+		$("#lpo").css("display", "none");
+	}
+	$.get("Instructor", {
+		fraction:fraction,
+	})
+})
+</script>
+</body>
+</html>

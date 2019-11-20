@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<p>单选题！！！</p>
+
+
+<div class="">
+
+	<a id="tin" href="#">新增试题</a>
+	<a id="tre" href="#">修改试题</a>
+	<a id="tde" href="Tdelete">删除试题</a>
+</div>	
+</body>
+<script src="js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+	$("#tin").click(function(event) {
+		event.preventDefault();
+		$(".content").css("display", "none");
+		$(".pjiao").css("display", "none");
+		$.get("teacher/Tincreased", {
+		}, function(data) {
+			$(".homepage").html(data);
+			
+		})
+	})
+	$("#tre").click(function(event) {
+		event.preventDefault();
+		$(".content").css("display", "none");
+		$(".pjiao").css("display", "none");
+		$.get("teacher/Trevise", {
+		}, function(data) {
+			$(".homepage").html(data);
+			
+		})
+	})
+	
+</script>
+
+</html>

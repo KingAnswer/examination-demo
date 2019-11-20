@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+	<p>请输入需要修改的数据</p>
+	<div th:each="revise:${javarevise}">
+		题号：<input class="TM1" th:value=${revise.id} />
+		<br>
+		题目：<input class="TM2" th:value=${revise.name} />
+		<br>
+		<div th:each="revis:${revise.javaOption}">
+			选题号：<input class="TM6"  th:value="${revis.id}" disabled/>
+			选题：<input class="TM3" th:value="${revis.topic}" />
+			
+			答案：<input class="TM4" th:value="${revis.isture}" />
+			
+			题号：<input class="TM5" th:value="${revis.javapractise_id}" />
+		</div>
+		<a id="revise" href="#" >确定修改</a>
+	</div>
+	<script src="js/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript">
+	$("#revise").click(function(event) {
+			event.preventDefault();	
+			alert("弹框！！");
+			var id = $(".TM1").val();
+			var name = $(".TM2").val();
+			var rid = $(".TM6").val();
+			var topic = $(".TM3").val();
+			var isture = $(".TM4").val();
+			var javapractise_id = $(".TM5").val();
+			for(int i=rid;i<4;i++){
+				var arr=[];
+				arr.push($(".TM3").val());	
+			}
+			alert(arr);
+			alert(id);
+			alert(name);
+			$.get("modify", {
+				id : id,
+				name :name,
+				rid :rid,
+				topic : topic,
+				isture : isture,
+				javapractise_id : javapractise_id
+			}, function(data) {
+			})
+		}) 
+	</script>
+</body>
+</html>

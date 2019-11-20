@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="online.shixun.project.mapper.EvaluatMapper">
+	<resultMap type="Evaluate" id="myEvaluate" >
+		<result column="e_id" property="id"/>
+		<result column="subject" property="subject"/>
+		<collection  property="evaluateTopic" ofType="EvaluateTopic">
+			<result column="t_id" property="id"/>
+			<result column="choose" property="choose"/>
+			<result column="evaluate_id" property="evaluate_id"/>
+			<result column="fraction" property="fraction" />
+		</collection>
+	</resultMap>
+
+<select id="gatallEvaluateT" resultMap="myEvaluate">
+SELECT 
+	e.id as e_id,e.subject,t.choose,t.evaluate_id,t.fraction,t.id as t_id
+FROM 
+	evaluate e,evaluate_topic t
+	
+WHERE
+	e.id=#{id}
+AND
+	t.evaluate_id=#{EvaluateId}
+</select>
+<select id="gatEvaluateById" resultType="Evaluate">
+SELECT 
+	e.id
+FROM 
+	evaluate e
+	
+</select>
+</mapper>

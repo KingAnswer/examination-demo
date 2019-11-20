@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<style>
+.fite {
+	width: 500px;
+	height: 480px;
+	border: 1px solid #ffffff;
+	float: left;
+	margin-left: 400px;
+	margin-top: 50px;
+}
+
+#djs {
+	margin-left: 320px;
+}
+
+#time {
+	float: right;
+}
+
+.right {
+	width: 300px;
+	height: 480px;
+	border: 1px solid #fffffff;
+	float: left;
+	margin-left: 10px;
+	margin-top: 50px;
+}
+.buut{
+	width: 220px;
+	height:100px;
+	border: 1px solid #fffff;
+	margin-top:50px;
+	margin-left:220px;
+}
+#pageNo{
+	width: 20px;
+	height:12px;
+}
+#frame{
+	width:30px;
+	height:25px;
+	margin-top:5px;
+	background-color: #00CACA;
+}
+#frame a{
+	margin-left: 10px;
+	margin-top: 20px;
+	text-decoration:none;
+}
+</style>
+<body>
+	<div class="fite">
+		<picture>考试试题</picture>
+		<picture id="djs">倒计时：</picture>
+		<div id="time"></div>
+		<div  th:each="subjects:${subject}">
+			<h2 class="stem" th:text=${subjects.stem}></h2>
+			<div th:each="sub:${subjects.answer}">
+				<input type="hidden" name="hiddenId" th:value=${sub.id+1}>
+				<input class="pol"  type="radio" name="radioId" th:value="${sub.id}"> 
+				<span class="username" th:text="${sub.content}"></span>
+			</div>
+		</div>
+		<div class="buut">
+			<input class="examination" type="submit"  value="提交">
+			   第<input id="pageNo" type="text" name="pageNo" th:value="${subjectId}">题
+			<a id="pape" th:if="${subjectId gt 1}" th:href="'beginTest?id='+${id-1}+'&'+'subjectId='+${subjectId-1}">上一题</a>
+			<a id="pape" th:if="${subjectId lt 3}" th:href="'beginTest?id='+${id+1}+'&'+'subjectId='+${subjectId+1}">下一题</a>
+		</div>
+	</div>
+		<div class="right">
+			<picture>试题检测</picture>
+			<div id="frame" th:each="subj:${sub}">
+			<a  th:text=${subj.id} th:href="'beginTest?id='+${subj.id}+'&'+'subjectId='+${subj.id}"></a>
+			</div>
+		</div>
+	<script src="js/jquery-2.0.3.min.js"></script>
+	<script src="js/jquery.cookie.js"></script>
+	<script type="text/javascript">
+	//异步提交,完成交卷
+	$('.pol').click(function(){
+	window.location.reload();
+    var me = $(this);
+    var cookieChoiceId = $.cookie('cookieChoiceId');//获取cookie值
+    if(!cookieChoiceId){
+        $.cookie('cookieChoiceId', me.val()+',', { path: "/"});//如果cookie为空,则把当前值存在cookie
+    }else{
+        var flag = true;//这变量为了区分cookie值里面有没有当前的值
+        var cookieChoiceIdArray = cookieChoiceId.split(',');//转化数组
+        for(var i=0;i<cookieChoiceIdArray.length;i++){
+            if(me.val() == cookieChoiceIdArray[i]){
+                flag = false;
+                cookieChoiceIdArray.splice($.inArray(me.val(),cookieChoiceIdArray));//如果当前的值在cookie里面,删除它
+            }
+        }
+        if(flag){//如果cookie里边没有当前值，则添加进去
+            cookieChoiceId = cookieChoiceId + me.val()+','
+            $.cookie('cookieChoiceId', cookieChoiceId, { path: "/"});
+        }else{//如果有的话,上面已经做了删除处理,把新的数组转成字符串,在存进去。
+            cookieChoiceId = cookieChoiceIdArray.join(',');
+            $.cookie('cookieChoiceId', cookieChoiceId, { path: "/"});
+        }
+    }
+})
+
+var cookieChoiceId = $.cookie('cookieChoiceId');//获取cookie值
+
+if(cookieChoiceId){
+    var cookieChoiceIdArray = cookieChoiceId.split(',');//取出的cookie值是字符串(cookie不支持存数组),先转成数组
+    $(".pol").each(function(){
+        for(var i=0;i<cookieChoiceIdArray.length;i++){//遍历所有多选框对应值是否存在于cookie,存在选中它
+            if($(this).val() == cookieChoiceIdArray[i]){
+                　　$(this).prop('checked','checked');
+            }
+        }
+    });
+}
+
+	$(".examination").click(function(){
+	    if(cookieChoiceId){
+	      $.ajax({
+	         type :'POST',
+	        url:"/succer",
+	        data:{"data":cookieChoiceId},//获取cookie数组
+	        success : function(data){
+	          alert("教师评价总分:"+data*33)
+	          $.cookie('cookieChoiceId', '', { expires: -1 }); // 删除 cookie
+	            window.location = "http://localhost:8080";
+	           }
+	      })
+	    }else{
+	      alert("您还有没有点击的选项")
+	    }
+	   });
+//计时器
+	localStorage.setItem('start', new Date().getTime());
+	countDown(localStorage.getItem('start'));
+	
+	function countDown(startTime) {
+		var time = setInterval(
+				function() {
+					var currentTime = new Date();
+					var second = 59 - parseInt(((currentTime.getTime() - startTime) / 1000) % 60);
+					var min = 4 - parseInt((currentTime.getTime() - startTime) / 60000);
+	
+					if (min < 10) {
+						min = "0" + min;
+					}
+					if (second < 10) {
+						second = "0" + second;
+					}
+					var countDown = min + ":" + second;
+					$('#time').html(countDown);
+	
+					if (second == 0 && min == 0) {
+						alert("考試時間到，系統自動交卷！");
+						window.location.href = "http://localhost:8080/doentry?name=admin&password=123456";
+						clearInterval(time);
+					}
+				}, 100)
+	}
+	</script>
+</body>
+</html>

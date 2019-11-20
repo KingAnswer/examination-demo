@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+.navigation {
+	width: 100%;
+	height: 60px;
+	border: 1px solid #ffffff;
+	background-color: #b6e8fc;
+}
+
+.navigation picture {
+	margin-left: 250px;
+	margin-top: 40px;
+}
+
+.navigation a {
+	margin-left: 10px;
+	text-decoration: none;
+}
+
+.success {
+	float: right;
+	margin-right: 50px;
+}
+.state {
+	width: 100%;
+	height: 80px;
+	border: 1px solid #ffffff;
+}
+
+.copy-info p {
+	text-align: center;
+}
+
+.copy-info a {
+	text-decoration: none;
+}
+
+.copy-images {
+	text-align: center;
+}
+.summary {
+	width: 60%;
+	height: 250px;
+	border: 1px solid #fffdfd;
+	margin: 0 auto;
+}
+
+.summary-left {
+	margin-left: 50px;
+	float: left;
+}
+
+.summary-left a {
+	text-decoration: none;
+}
+
+.summary-right {
+	margin-right: 50px;
+	float: right;
+}
+li {
+    position: relative;
+    width: 70px;
+    height: 26px;
+    background-color: rgba(100, 163, 200, 0.3);
+    margin-bottom: 30px;
+    }
+   /* 给a设置宽高百分百，就会撑满 li，这样鼠标经过 li 的时候，就会变为小手 */
+   li > a {
+       display: inline-block;
+       width: 100%;
+       height: 100%;
+   }
+
+.none {
+    width: 200px;
+    height: 100px;
+    padding: 19px 24px 11px 16px;
+    box-sizing: border-box;
+    background: rgba(255, 100, 0, 0.1);
+    border: 1px solid #999;
+    position: absolute;
+    left: 70px;
+    top: -1px;
+    z-index: 3;
+    display: none;/*这里把 none 里面的内容隐藏起来*/
+}
+
+  /* 这里设置li鼠标移过的时候，如果里面有none这个类，才会触发里面的样式 */
+  li:hover .none{
+      display: block;/*这里把 none 里面的内容显示出来*/
+  }
+  
+.cent2_1{
+background:rgb(250, 251, 252); 
+height:20px; 
+width:200px;
+}
+.cs2_1{
+width:200px;
+height:50px;
+margin-left: 140px;
+margin-top:660px;
+background: #b6e8fc;
+top:0px;
+position:absolute;
+opacity: 0;
+display: block;
+font-size: 12px;
+transition: 0.3s;
+-webkit-transition: .5s;
+-moz-transition: .5s;
+}
+.cent2_1:hover .cs2_1{
+color: #656e73;
+opacity: 1;
+}
+.cent2_2{
+background:rgb(252, 250, 251);
+height:20px; 
+width:200px;
+}
+.cs2_2{
+width:200px;
+height:50px;
+margin-left: 140px;
+margin-top:700px;
+background:#b6e8fc;
+top:0px;
+position:absolute;
+opacity: 0;
+display: block;
+font-size: 12px;
+transition: 0.3s;
+-webkit-transition: .5s;
+-moz-transition: .5s;
+}
+.cent2_2:hover .cs2_2{
+color: #656e73;
+opacity: 1;
+}
+.cent2_3{
+background:rgb(252, 250, 251);
+height:20px; 
+width:200px;
+}
+.cs2_3{
+width:200px;
+height:50px;
+margin-left: 140px;
+margin-top:740px;
+background:#b6e8fc;
+top:0px;
+position:absolute;
+opacity: 0;
+display: block;
+font-size: 12px;
+transition: 0.3s;
+-webkit-transition: .5s;
+-moz-transition: .5s;
+}
+.cent2_3:hover .cs2_3{
+color: #656e73;
+opacity: 1;
+}
+</style>
+<body>
+
+	<div class="navigation ">
+		<br>
+		<picture>考试系统&nbsp;Examination system</picture>
+		<a href="http://localhost:8080/doentry?name=teacher&password=123456">
+			首页</a>
+		<div th:if="${teacher != null}" class="success"style="color: rgb(14, 13, 13)">
+			<a href="adminInfo"><span th:text="${teacher.name}"></span></a>&nbsp;&nbsp;登陆成功
+			<a href="/system">退出登录</a>
+		</div>
+		<br>
+	</div>
+	<div class="content">
+		<div class="summary">
+			<div class="summary-left">
+				<h3>考试系统概述</h3>
+				<picture>对知识点进行管理、对题型管理设置<br>
+				对题库信息进行管理、考试类别管理<br>
+				对试卷管理规则进行设置。</picture>
+				<br> <br> <a href="#">内容概述</a><br> <a href="#">功能概述</a><br>
+				<a href="#">功能概述</a><br> <a href="#">编写初衷</a>
+			</div>
+			<div class="summary-right">
+				<img src="images/js.JPG" width="250px" height="250px">
+			</div>
+		</div>
+		<p>内容显示</p>		
+		<div id="app">
+        <ul>
+            <li class="pract" th:each="Tpractis:${Tpractise}">
+                <a href="@{'Tpractise?id='+ ${Tpractis.id}}" th:text=${Tpractis.name} ></a>
+                <div class="none">
+                	<a id="tone" href="#">单选题</a>
+                	<a href="#">辨析题</a>
+                	<a href="#">编程题</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<div class="pjiao">
+		<p id="p">评教</p>
+		<div class="">
+		<div class="cent2_1">
+		<p id="p">大数据与信息工程学院</p>
+		  <div class="cs2_1">
+			 <span>辅导员：</span>&nbsp;&nbsp;<a href="">查看</a> <a href="increase">增加</a> <a href="">删除</a>  <a href="">修改</a><br>
+		    <span>专业课：</span>&nbsp;&nbsp;<a href="">查看</a> <a href="">增加</a> <a href="">删除</a>  <a href="">修改</a><br>
+		    <span>选修课：</span>&nbsp;&nbsp;<a href="">查看</a> <a href="">增加</a> <a href="">删除</a>  <a href="">修改</a><br>
+			   </div>
+            </div>
+		 </div>
+		<div class=""> 
+		  <div class="cent2_2">
+		<p id="p">体育与艺术学院 </p>
+		 <div class="cs2_2">
+			   <a href="#">这是一个超链接！！</a><br>
+			   <a href="#">这是一个超链接！！</a><br>
+			   <a href="#">这是一个超链接！！</a><br>
+			   </div>
+            </div>
+          
+		</div>
+		<div class=""> 
+		  <div class="cent2_3">
+		<p id="p">基础教育学院</p>
+		<div class="cs2_3">
+			   <a href="#">这是一个超链接！！！</a><br>
+			   <a href="#">这是一个超链接！！！</a><br>
+			   <a href="#">这是一个超链接！！！</a><br>
+			   </div>
+		</div>
+	</div>
+	</div>
+	
+	<div class="homepage"></div>
+	<div class="state">
+		<div class="copy-info">
+			<p>
+				<a href="#">系统简介|</a><a href="#">系统公告 |</a><a href="#">留言建议 |</a><a
+					href="#">联系我们 |</a>客服热线：888-666-123
+			</p>
+			<p>Copyright&copy;2019-2220 系统版权所有 &nbsp;&nbsp;京ICP备09037834号
+				&nbsp;&nbsp;京ICP证B1034-8373号 某市公安局XX分局备案编号：123456789123</p>
+		</div>
+	</div>
+
+ <script src="js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$("#tone").click(function(event) {
+	event.preventDefault();
+	$(".content").css("display", "none");
+	$(".pjiao").css("display", "none");
+	$.get("teacher/Tone", {
+	}, function(data) {
+		$(".homepage").html(data);
+	})
+})
+</script>
+</body>
+</html>

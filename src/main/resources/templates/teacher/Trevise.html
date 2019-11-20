@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>修改页面</title>
+</head>
+<body>
+	<p>请你现在你要修改的题目</p>
+	<table>
+		<tr>
+			<th>编号</th>
+			<th>题目</th>
+			<th>操作</th>
+		</tr>
+		<tr th:each="Trevise:${jpe}">
+			<td id="treviseid" th:text="${Trevise.id}"></td>
+			<td th:text="${Trevise.name}"></td>
+			<td><a class="TMrevise" th:href="${Trevise.id}">修改</a></td>
+		</tr>
+	</table>
+<div class="Thomepage"></div>
+	<script src="js/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript">
+		$(".TMrevise").click(function(event) {
+			event.preventDefault();
+			//var id= $(this).html();
+			var id = $(this).attr("href");
+			$.get("Tmrevise", {
+				id : id
+			}, function(data) {
+				$(".Thomepage").html(data);
+			})
+		})
+	</script>
+</body>
+</html>
